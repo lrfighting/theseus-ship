@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { ArrowRight, Dices, Search, Sparkles } from 'lucide-react';
+import { ArrowRight, Dices, Sparkles } from 'lucide-react';
 import { getStoryList } from '../services/zhihuApi';
 import type { StorySummary } from '../types/story';
 
@@ -15,7 +15,6 @@ function pickRandom<T>(arr: T[]): T | null {
 
 export default function ListPage({ onOpen }: ListPageProps) {
   const [stories, setStories] = useState<StorySummary[]>([]);
-  const [keyword, setKeyword] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   useEffect(() => {
@@ -27,15 +26,7 @@ export default function ListPage({ onOpen }: ListPageProps) {
       .finally(() => setLoading(false));
   }, []);
 
-  const filteredStories = useMemo(() => {
-    const value = keyword.trim().toLowerCase();
-    if (!value) return stories;
-    return stories.filter((story) =>
-      `${story.title} ${story.description} ${story.labels.join(' ')}`
-        .toLowerCase()
-        .includes(value),
-    );
-  }, [keyword, stories]);
+
 
   const heroFloating = useMemo(() => stories.slice(0, 3), [stories]);
   const heroStats = useMemo(
@@ -132,15 +123,7 @@ export default function ListPage({ onOpen }: ListPageProps) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.45, duration: 0.4 }}
       >
-        <div className="search-input">
-          <Search size={18} />
-          <input
-            value={keyword}
-            onChange={(event) => setKeyword(event.target.value)}
-            placeholder="搜索故事标题、简介或标签"
-          />
-        </div>
-        <span className="count">{filteredStories.length} 篇</span>
+        <span className="count">{stories.length} 篇</span>
         <button className="random-btn" onClick={handleRandom}>
           <Dices size={14} /> 随机一本
         </button>
@@ -149,8 +132,8 @@ export default function ListPage({ onOpen }: ListPageProps) {
       <div className="list-content">
         {loading && <div className="state-card">故事列表加载中…</div>}
         {error && <div className="state-card error">{error}</div>}
-        {!loading && !error && filteredStories.length === 0 && (
-          <div className="state-card">没有找到相关故事</div>
+        {!loading && !error && stories.length === 0 && (
+          <div className="state-card">暂无故事</div>
         )}
 
         <motion.div
@@ -161,7 +144,7 @@ export default function ListPage({ onOpen }: ListPageProps) {
           transition={{ staggerChildren: 0.05 }}
         >
           <AnimatePresence>
-            {filteredStories.map((story) => (
+            {stories.map((story) => (
                 <motion.article
                   key={story.work_id}
                   layout
