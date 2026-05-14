@@ -3625,20 +3625,7 @@ a {
 
 /* ============ 档案入口 Loading 状态 ============ */
 
-.archive-entry-card.is-loading {
-  position: relative;
-}
-
-.archive-entry-card.is-loading::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 5;
-  background: rgb(255 255 255 / 55%);
-  backdrop-filter: blur(2px);
-  border-radius: inherit;
-  pointer-events: none;
-}
+/*  removed: white overlay during loading */
 
 .archive-tile.disabled {
   opacity: 0.5;
