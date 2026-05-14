@@ -161,19 +161,18 @@ function TopNav({
         <span className="dot">
           <Sparkles size={16} />
         </span>
-        盐言互动
-        <span className="sub">· AI Interactive Reading</span>
+        盐言·忒修斯之船
       </button>
       <div className="nav-actions">
         {view.name !== 'list' && view.name !== 'detail' ? (
           <button className="btn btn-primary" onClick={() => onNavigate({ name: 'list' })}>
             <BookOpenCheck size={14} />
-            开始阅读
+            登船
             <ArrowUpRight size={14} />
           </button>
         ) : (
           <button className="btn btn-ghost" onClick={() => onNavigate({ name: 'cover' })}>
-            返回首页
+            返航
           </button>
         )}
         {user ? (

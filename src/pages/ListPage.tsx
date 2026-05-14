@@ -62,13 +62,13 @@ export default function ListPage({ onOpen }: ListPageProps) {
               <Sparkles size={13} /> 知乎盐言 · AI 互动阅读
             </span>
             <h1>
-              选择剧情，
+              选择你的航向，
               <br />
-              <span className="accent">生成属于你的故事走向</span>
+              <span className="accent">书写独一无二的故事结局</span>
             </h1>
             <p className="subtitle">
-              在 AI 的笔下，让每一次阅读都成为一次独一无二的创作旅程。
-              数据 24 小时本地缓存，告别等待与重复调用。
+              在已有小说的关键节点进行分支改写，产生基于原有世界观的全新结局。
+              数据本地缓存，告别等待与重复调用。
             </p>
             <div className="stat-row">
               <span className="stat">

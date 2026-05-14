@@ -87,7 +87,7 @@ export default function CoverPage({ onEnter }: CoverPageProps) {
         transition={{ delay: 0.05 }}
       >
         <span className="pulse" />
-        全新发布 · 由 AI 编织的互动小说
+        改写命运的节点，驶向未知的结局
       </motion.span>
 
       <motion.h1
@@ -96,8 +96,8 @@ export default function CoverPage({ onEnter }: CoverPageProps) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.15, duration: 0.6 }}
       >
-        在每一个分岔口， <br />
-        <span className="gradient">让故事属于你</span>
+        故事没有既定的结局，<br />
+        <span className="gradient">每一次选择都是新的航向</span>
       </motion.h1>
 
       <motion.p
@@ -106,9 +106,8 @@ export default function CoverPage({ onEnter }: CoverPageProps) {
         animate={{ opacity: 1 }}
         transition={{ delay: 0.35 }}
       >
-        知乎盐言 × AI 互动阅读。
-        在文字与抉择之间，挑选你心目中的剧情走向，看 AI 如何延展属于你的故事线。
-        简洁的苹果风界面、可视化的脑图、丰富的动效，让每一次阅读都是一次创作。
+        在已有小说的关键节点进行分支改写，产生基于原有世界观的全新结局。
+        简洁的界面、可视化的脑图、丰富的动效，让每一次阅读都是一次创作。
       </motion.p>
 
       <motion.div
@@ -124,7 +123,7 @@ export default function CoverPage({ onEnter }: CoverPageProps) {
           onClick={onEnter}
         >
           <Sparkles size={16} />
-          立即开始阅读
+          登船启程
           <ArrowRight size={16} />
         </motion.button>
         <a className="btn btn-ghost" href="#features">
