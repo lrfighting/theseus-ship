@@ -128,7 +128,26 @@ export function useStoryBackground(story: StoryDetail | null): StoryBackgroundSt
           readiness: bundle.readiness,
         }));
       },
-      onError: (err) => setState((prev) => ({ ...prev, error: err })),
+      onError: (err) =>
+        setState((prev) => {
+          const nextReadiness = { ...prev.readiness };
+          for (const task of Object.keys(nextReadiness) as BackgroundTaskType[]) {
+            if (nextReadiness[task] === 'pending') nextReadiness[task] = 'failed';
+          }
+          return { ...prev, error: err, readiness: nextReadiness };
+        }),
+      onDone: () =>
+        setState((prev) => {
+          const nextReadiness = { ...prev.readiness };
+          let changed = false;
+          for (const task of Object.keys(nextReadiness) as BackgroundTaskType[]) {
+            if (nextReadiness[task] === 'pending') {
+              nextReadiness[task] = 'failed';
+              changed = true;
+            }
+          }
+          return changed ? { ...prev, readiness: nextReadiness } : prev;
+        }),
     });
     abortRef.current = stream;
 

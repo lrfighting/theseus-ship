@@ -57,6 +57,7 @@ export function openSseStream<TFinal>(path: string, body: unknown): SseStream<TF
           Accept: 'text/event-stream',
         },
         body: JSON.stringify(body),
+        credentials: 'include',
         signal: controller.signal,
       });
 
