@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { ArrowUpRight, BookOpenCheck, LogIn, LogOut, Sparkles } from 'lucide-react';
+import { ArrowUpRight, BookOpenCheck, LogIn, LogOut, Ship } from 'lucide-react';
 import CoverPage from './pages/CoverPage';
 import ListPage from './pages/ListPage';
 import DetailPage from './pages/DetailPage';
@@ -159,7 +159,7 @@ function TopNav({
         aria-label="返回封面"
       >
         <span className="dot">
-          <Sparkles size={16} />
+          <Ship size={16} />
         </span>
         盐言·忒修斯之船
       </button>
