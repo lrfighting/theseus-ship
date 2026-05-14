@@ -34,7 +34,7 @@ import {
 import { getStoryDetail } from '../services/zhihuApi';
 import { useStoryBackground } from '../hooks/useStoryBackground';
 import { useBranchContinuation } from '../hooks/useBranchContinuation';
-import { buildEscapeLingshanPresetKeyNodes } from '../data/escapeLingshanPresetKeyNodes';
+import { buildPresetKeyNodes } from '../data/storyPresets';
 import {
   appendBranchToCurrentLineage,
   createLineageFromBranch,
@@ -96,7 +96,7 @@ export default function DetailPage({ workId, onBack }: DetailPageProps) {
 
   const background = useStoryBackground(story);
   const presetKeyNodes = useMemo(
-    () => (story ? buildEscapeLingshanPresetKeyNodes(story) : null),
+    () => (story ? buildPresetKeyNodes(story) : null),
     [story?.work_id, story?.content_hash, story?.chapter_name, story?.content],
   );
   const branchGen = useBranchContinuation();

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { buildEscapeLingshanPresetKeyNodes } from '../data/escapeLingshanPresetKeyNodes';
+import { buildPresetKeyNodes } from '../data/storyPresets';
 import {
   fetchKeyNodes,
   startBackgroundAll,
@@ -163,7 +163,7 @@ export function useStoryBackground(story: StoryDetail | null): StoryBackgroundSt
   }, [story, state.keyNodes, state.readiness.key_nodes]);
 
   const presetKeyNodes = useMemo(
-    () => (story ? buildEscapeLingshanPresetKeyNodes(story) : null),
+    () => (story ? buildPresetKeyNodes(story) : null),
     [story?.work_id, story?.content_hash, story?.chapter_name, story?.content],
   );
 
