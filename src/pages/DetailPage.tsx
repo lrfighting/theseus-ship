@@ -551,6 +551,27 @@ export default function DetailPage({ workId, onBack }: DetailPageProps) {
     );
   }, [story, session, readerBranches, branchGen, paragraphs, truncation, allKeyNodes]);
 
+  // 稳定传给 StoryMindMap 的 props，防止 React Flow StoreUpdater 死循环
+  const mindmapBranches = useMemo(
+    () => (session ? Object.values(session.branches).filter((b) => b.branch_type !== 'extra') : []),
+    [session?.branches],
+  );
+
+  const handleMindMapSelectNoop = useCallback(() => undefined, []);
+  const handleMindMapExpand = useCallback(() => setMapFullscreen(true), []);
+  const handleMindMapSelectNode = useCallback(
+    (id: string | null) => {
+      if (!id) return;
+      setSession((prev) => (prev ? setCurrentBranch(prev, id) : prev));
+    },
+    [],
+  );
+  const handleMindMapAddBranch = useCallback((nodeId: string) => {
+    setActiveNodeId(nodeId);
+    setMapFullscreen(false);
+  }, []);
+  const handleMindMapClose = useCallback(() => setMapFullscreen(false), []);
+
   // ─── 渲染 ───────────────────────────────────────────────────
   if (loading) return <div className="state-card">正文加载中…</div>;
   if (error) return <div className="state-card error">{error}</div>;
@@ -737,14 +758,14 @@ export default function DetailPage({ workId, onBack }: DetailPageProps) {
               <StoryMindMap
                 story={story}
                 keyNodes={allKeyNodes}
-                branches={Object.values(session.branches).filter((b) => b.branch_type !== 'extra')}
+                branches={mindmapBranches}
                 lineages={session.lineages}
                 currentLineageId={session.current_lineage_id}
                 selectedNodeId={activeNodeId ?? session.current_branch_id}
                 interactive={false}
-                onSelectNode={() => undefined}
+                onSelectNode={handleMindMapSelectNoop}
                 onRequestSwitchLineage={handleSwitchLineage}
-                onExpand={() => setMapFullscreen(true)}
+                onExpand={handleMindMapExpand}
               />
               {background.progress.ready < background.progress.total && (
                 <div className="mindmap-loading-overlay">
@@ -804,22 +825,16 @@ export default function DetailPage({ workId, onBack }: DetailPageProps) {
                 <StoryMindMap
                   story={story}
                   keyNodes={allKeyNodes}
-                  branches={Object.values(session.branches).filter((b) => b.branch_type !== 'extra')}
+                  branches={mindmapBranches}
                   lineages={session.lineages}
                   currentLineageId={session.current_lineage_id}
                   selectedNodeId={activeNodeId ?? session.current_branch_id}
                   interactive
-                  onSelectNode={(id) => {
-                    if (!id) return;
-                    setSession((prev) => (prev ? setCurrentBranch(prev, id) : prev));
-                  }}
+                  onSelectNode={handleMindMapSelectNode}
                   onJumpToNode={handleJumpToNode}
                   onRequestSwitchLineage={handleSwitchLineage}
-                  onRequestAddBranch={(nodeId) => {
-                    setActiveNodeId(nodeId);
-                    setMapFullscreen(false);
-                  }}
-                  onClose={() => setMapFullscreen(false)}
+                  onRequestAddBranch={handleMindMapAddBranch}
+                  onClose={handleMindMapClose}
                 />
               </motion.div>
             </>

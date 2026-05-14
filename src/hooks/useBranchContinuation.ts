@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   startBranchContinuation,
   type BranchContinuationCallbacks,
@@ -104,5 +104,5 @@ export function useBranchContinuation(): UseBranchContinuation {
 
   useEffect(() => () => streamRef.current?.abort(), []);
 
-  return { state, start, cancel, reset };
+  return useMemo(() => ({ state, start, cancel, reset }), [state, start, cancel, reset]);
 }

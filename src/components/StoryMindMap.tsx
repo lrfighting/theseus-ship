@@ -15,7 +15,7 @@
  *  - ready_to_switch：右上勾选徽章
  */
 
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 import {
   Background,
   BackgroundVariant,
@@ -175,14 +175,17 @@ const ROW_HEIGHT = 116;        // 同一子树内每"行"占用的纵向空间
 const FIRST_ROW_OFFSET = 132;  // keypoint 主线到下方第一行子分支的距离
 const MIN_GAP = 50;            // 父子节点之间的最小安全间隙
 
-function FitViewOnChange({ trigger, padding }: { trigger: string; padding?: number }) {
+function SafeFitView({ nodesLength, edgesLength, padding }: { nodesLength: number; edgesLength: number; padding?: number }) {
   const { fitView } = useReactFlow();
+  const prevRef = useRef({ nodes: 0, edges: 0 });
   useEffect(() => {
+    if (prevRef.current.nodes === nodesLength && prevRef.current.edges === edgesLength) return;
+    prevRef.current = { nodes: nodesLength, edges: edgesLength };
     const id = window.setTimeout(() => {
       fitView({ padding: padding ?? 0.22, duration: 320 });
-    }, 40);
+    }, 60);
     return () => window.clearTimeout(id);
-  }, [trigger, fitView, padding]);
+  }, [nodesLength, edgesLength, fitView, padding]);
   return null;
 }
 
@@ -538,7 +541,15 @@ export default function StoryMindMap({
     return () => window.removeEventListener('keydown', onKey);
   }, [interactive, onClose]);
 
-  const fitTrigger = `${interactive ? 'i' : 'p'}-${nodes.length}-${edges.length}-${currentLineageId ?? ''}`;
+  // 调试日志：帮助定位 Maximum update depth 问题
+  const renderCountRef = useRef(0);
+  renderCountRef.current += 1;
+  useEffect(() => {
+    console.log('[StoryMindMap] render #', renderCountRef.current, 'nodes.length=', nodes.length, 'edges.length=', edges.length);
+  });
+
+  const fitViewOptions = useMemo(() => ({ padding: interactive ? 0.18 : 0.06, includeHiddenNodes: true }), [interactive]);
+  const defaultEdgeOptions = useMemo(() => ({ type: 'smoothstep' as const }), []);
 
   return (
     <div
@@ -554,7 +565,7 @@ export default function StoryMindMap({
         onNodeClick={handleNodeClick}
         onPaneClick={handlePaneClick}
         fitView
-        fitViewOptions={{ padding: interactive ? 0.18 : 0.06, includeHiddenNodes: true }}
+        fitViewOptions={fitViewOptions}
         nodesDraggable={false}
         nodesConnectable={false}
         elementsSelectable={interactive}
@@ -564,14 +575,14 @@ export default function StoryMindMap({
         zoomOnPinch={interactive}
         zoomOnDoubleClick={interactive}
         preventScrolling={interactive}
-        proOptions={{ hideAttribution: true }}
+        proOptions={useMemo(() => ({ hideAttribution: true }), [])}
         minZoom={0.05}
         maxZoom={2}
-        defaultEdgeOptions={{ type: 'smoothstep' }}
+        defaultEdgeOptions={defaultEdgeOptions}
       >
         <Background variant={BackgroundVariant.Dots} gap={26} size={1.2} color="#c4d4ea" />
         {interactive && <Controls position="bottom-right" showInteractive={false} />}
-        <FitViewOnChange trigger={fitTrigger} padding={interactive ? 0.18 : 0.06} />
+        <SafeFitView nodesLength={nodes.length} edgesLength={edges.length} padding={interactive ? 0.18 : 0.06} />
       </ReactFlow>
 
       <div className="legend">
