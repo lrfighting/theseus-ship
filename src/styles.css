@@ -1477,6 +1477,69 @@ a {
   color: var(--ink-3);
 }
 
+/* ============ 选项卡片（分岔样式） ============ */
+
+.option-card {
+  display: flex;
+  width: 100%;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 14px 16px;
+  margin-bottom: 10px;
+  text-align: left;
+  color: var(--ink-1);
+  background: #fff;
+  border: 1px solid rgb(0 132 255 / 12%);
+  border-radius: var(--radius-md);
+  box-shadow: 0 1px 3px rgb(0 0 0 / 4%);
+  transition: all 0.2s var(--easing);
+  cursor: pointer;
+}
+
+.option-card:hover {
+  border-color: rgb(0 132 255 / 30%);
+  box-shadow: 0 4px 12px rgb(0 132 255 / 10%);
+  transform: translateY(-1px);
+}
+
+.option-card:active {
+  transform: translateY(0);
+}
+
+.option-card .option-num {
+  display: inline-flex;
+  width: 28px;
+  height: 28px;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  background: var(--brand);
+  border-radius: 50%;
+  font-size: 13px;
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.option-card .option-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.option-card .option-title {
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--ink-1);
+}
+
+.option-card .option-desc {
+  margin-top: 4px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--ink-3);
+}
+
 .node-popover .custom-row {
   display: flex;
   align-items: center;

@@ -46,19 +46,26 @@ export default function BranchPopover({ node, onPick, onClose }: BranchPopoverPr
       </div>
       <p className="pop-summary">{node.summary}</p>
 
-      {node.branch_options.map((option, idx) => (
-        <button
-          key={option.option_id}
-          className="option-btn"
-          onClick={() => onPick(option.text, node.node_id, option)}
-        >
-          <span className="opt-index">{idx + 1}</span>
-          <span>
-            {option.text}
-            <small className="opt-tone">{option.tone}</small>
-          </span>
-        </button>
-      ))}
+      {node.branch_options.map((option, idx) => {
+        // 解析 text：大标题 —— 详细描述
+        const parts = option.text.split(/——|—/);
+        const title = parts[0].trim();
+        const desc = parts.slice(1).join('——').trim();
+        return (
+          <button
+            key={option.option_id}
+            className="option-card"
+            onClick={() => onPick(option.text, node.node_id, option)}
+          >
+            <span className="option-num">{idx + 1}</span>
+            <div className="option-body">
+              <div className="option-title">{title}</div>
+              {desc && <div className="option-desc">{desc}</div>}
+              {option.tone && !desc && <div className="option-desc">{option.tone}</div>}
+            </div>
+          </button>
+        );
+      })}
 
       <div className="custom-row">
         <input
