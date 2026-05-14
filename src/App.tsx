@@ -22,6 +22,7 @@ function App() {
   });
   const [scrolled, setScrolled] = useState(false);
   const [user, setUser] = useState<ZhihuUser | null>(null);
+  const [authChecked, setAuthChecked] = useState(false);
 
   useEffect(() => {
     // 检查是否是知乎前端回调（URL 中有 code）
@@ -44,12 +45,23 @@ function App() {
         .catch(() => setUser(null))
         .finally(() => {
           // 兜底：无论成功与否都刷新一次用户状态
-          fetchMe().then(setUser).catch(() => setUser(null));
+          fetchMe().then(setUser).catch(() => setUser(null)).finally(() => setAuthChecked(true));
         });
     } else {
-      fetchMe().then(setUser).catch(() => setUser(null));
+      fetchMe().then(setUser).catch(() => setUser(null)).finally(() => setAuthChecked(true));
     }
   }, []);
+
+  // 强制登录：进入首页时若未登录，自动跳转登录
+  useEffect(() => {
+    if (!authChecked) return;
+    if (user) return;
+    // 仅在 cover 页面强制登录，避免在 list/detail 等子页面干扰
+    if (view.name !== 'cover') return;
+    // 开发环境不走强制登录（方便本地调试）
+    if (import.meta.env.DEV) return;
+    loginWithZhihu();
+  }, [authChecked, user, view.name]);
 
   async function handleLogout() {
     await logout();
