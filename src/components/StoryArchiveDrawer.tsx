@@ -129,7 +129,7 @@ export default function StoryArchiveDrawer({
 }
 
 function PendingPlaceholder({ label }: { label: string }) {
-  return <div className="archive-empty">正在生成 {label} 信息……</div>;
+  return <div className="archive-empty">{label}信息加载中…</div>;
 }
 
 function WorldTab({
@@ -141,7 +141,6 @@ function WorldTab({
   world?: WorldContext;
   ready: boolean;
 }) {
-  if (!world && !summary) return <PendingPlaceholder label="世界观" />;
   return (
     <div className="archive-content">
       {summary && (
@@ -194,7 +193,7 @@ function WorldTab({
           </section>
         </>
       ) : (
-        !ready && <PendingPlaceholder label="世界观" />
+        <div className="archive-empty">世界观信息待生成</div>
       )}
     </div>
   );
@@ -207,8 +206,8 @@ function CharactersTab({
   characters?: CharacterProfile[];
   ready: boolean;
 }) {
-  if (!characters) return <PendingPlaceholder label="人物" />;
-  if (characters.length === 0 && !ready) return <PendingPlaceholder label="人物" />;
+  if (!characters) return <div className="archive-empty">人物信息待生成</div>;
+  if (characters.length === 0 && !ready) return <div className="archive-empty">人物信息待生成</div>;
 
   const mains = characters.filter((c) => c.type === 'main');
   const npcs = characters.filter((c) => c.type === 'npc');
@@ -274,8 +273,8 @@ function RelationsTab({
   characters?: CharacterProfile[];
   ready: boolean;
 }) {
-  if (!relations) return <PendingPlaceholder label="关系网" />;
-  if (relations.relations.length === 0 && !ready) return <PendingPlaceholder label="关系网" />;
+  if (!relations) return <div className="archive-empty">关系网信息待生成</div>;
+  if (relations.relations.length === 0 && !ready) return <div className="archive-empty">关系网信息待生成</div>;
 
   const idMap = new Map<string, string>();
   characters?.forEach((c) => idMap.set(c.character_id, c.name));
@@ -305,8 +304,8 @@ function ObjectsTab({
   objects?: ObjectProfile[];
   ready: boolean;
 }) {
-  if (!objects) return <PendingPlaceholder label="物品" />;
-  if (objects.length === 0 && !ready) return <PendingPlaceholder label="物品" />;
+  if (!objects) return <div className="archive-empty">物品信息待生成</div>;
+  if (objects.length === 0 && !ready) return <div className="archive-empty">物品信息待生成</div>;
 
   return (
     <div className="archive-content">
