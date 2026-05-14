@@ -1,6 +1,6 @@
 # theseus-ship
 
-盐言互动 · AI Interactive Reading 前端
+ 前端
 
 ## 技术栈
 - React + TypeScript
