@@ -66,7 +66,7 @@ export const cacheKeys = {
     `ai_key_nodes_${workId}_${contentHash}_local_v1`,
   /** 浏览器侧的故事档案副本（背景信息一次性聚合） */
   archiveBundle: (workId: string, contentHash: string) =>
-    `yyan_archive_${workId}_${contentHash}_v2`,
+    `yyan_archive_${workId}_${contentHash}_v3`,
   /** 用户会话：分支链路与节点（user-level，不进入服务端共享缓存） */
   session: (workId: string) => `yyan_session_${workId}`,
   /** 旧 UI 兼容键，仅前端使用 */
